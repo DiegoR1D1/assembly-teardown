@@ -78,9 +78,13 @@ Write `00_locked_rules.md` with a timestamp before any transcript other than the
 
 Reposts are excluded from selection but used for the noise floor (step 3).
 
+**Dedupe:** collapse re-cuts and reposts of any video (same caption, or a matching transcript) into one entry, keeping the higher score, before picking the top 3 and bottom 3.
+
 **Selection on each channel:**
 - the top 3 and bottom 3 eligible videos by outlier score, excluding the outlier itself
 - ties go first to videos already analysed (0 credits), then to the most recent
+
+**Same source on both sides:** score the outlier from the same source as the videos it is compared against. If a grid is classified from captions, classify the outlier from its caption too, and report both readings when they differ (for example a short spoken script with a 10-item list in the caption).
 
 **Free shortcut:** if a creator's captions run to 80 words or more and read as the spoken script, classify their full eligible grid on M4 from the captions at no credit cost. Check that the caption labels match the transcript labels on the 6 analysed videos. If they disagree, drop the shortcut.
 
@@ -111,9 +115,11 @@ Record whether the result HELD, BROKE (4 or fewer of 6) or was NOISE.
 
 ### 3. Noise floor
 
+- Reposts are the strongest evidence this skill has. If one or more reposts of the outlier exist and they land far below it, that outranks every metric: lead the verdict with it.
 - If a repost of the outlier exists, report `outlier views ÷ repost views`. That gap is distribution, not content. The repost's own outlier score is the content-adjusted signal.
 - If the outlier's score is below the 90th percentile of eligible scores on its channel, it's a good day, not an outlier. Say so; the verdict is at most ADAPT.
 - Never credit an assembly feature with a difference smaller than an observed noise floor.
+- Record distribution triggers the transcript can't measure: a comment-keyword CTA ("Comment X and I'll send you…"), a list carried in the caption, an unusually high comment rate. Flag them as possible drivers; never score them.
 - With 6 videos per channel, metrics can rule ideas out but can't prove rules. Say "pattern", never "law".
 
 ### 4. Blind scoring
@@ -155,6 +161,8 @@ Run the same scoring on my top 3 and bottom 3.
 - **COPY:** TYPICAL on their channel, and its mechanics match my winners on every metric that discriminates on my account. Copy the *structure*; never the topic or the hook wording.
 - **ADAPT:** everything in between. Take only the mechanics that my own data supports.
 
+Also label the verdict **STRONG** (repost evidence, or 2+ metrics discriminating) or **WEAK** (one metric, or a borderline score), and say which evidence leads.
+
 ### 8. What to take (3 moves at most)
 
 Each move is a **mechanic**, phrased as an instruction. Examples: "Name one mechanism and land it by sentence 3" or "No 'I' before 10s; credentials after 20s".
@@ -170,7 +178,7 @@ Also list up to 2 DISCARDs when they matter, for example "their 38% motivational
 
 **Beat sheet:** up to 6 beats. Each beat has a time range, the exact spoken line, and screen direction where the visual proves the point a second before the words say it.
 - Measure my speaking rate from my top video: transcript words ÷ seconds. Keep the total under 60 seconds and state the word count.
-- Put any credential or "I" line where my winners put it.
+- Put any credential or "I" line where my winners put it. Quote credentials only from my channel description or captions; if none is available, write `[YOUR PROOF]`. Never invent one.
 - End with a comment-keyword CTA that delivers a free asset tied to the video's mechanism, plus the user's goal if one was given (for example a tracked link in the DM). Don't use a sales CTA unless my data supports it.
 - Fact-check every number and name in the script against the receipts.
 

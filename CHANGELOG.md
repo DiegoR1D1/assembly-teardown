@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-12: v2.1, fixes from the first fresh run
+
+WHAT: Reposts lead the verdict when they exist. Re-cuts are deduped before selection. Outlier and comparison videos are scored from the same source. Comment-keyword CTAs and caption lists are flagged as possible drivers. Verdicts carry STRONG or WEAK. Credentials come only from the user's own channel, else [YOUR PROOF].
+
+WHY: The first fresh run (a 213x Reel) reached a defensible SKIP but led with a single borderline metric, counted a re-cut twice, compared spoken scripts against captions, and invented a credential for the user.
+
+WATCH FOR: STRONG still means six videos per side. Caption-vs-transcript disagreements will be common on creators who write long captions.
+
 ## 2026-10-12: v2, renamed to Outlier Check
 
 WHAT: Replaced the teardown skill with the version built in the claude.ai conversation. Output is now a one-screen COPY / ADAPT / SKIP verdict with two checks: is the outlier typical of its creator's hits, and does it fit the user's account. Rules are locked before measuring and scored by two blind raters.
