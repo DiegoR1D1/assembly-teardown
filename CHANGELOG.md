@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-12: v2.4, next video becomes a production brief
+
+WHAT: Block 5 now gives topic and why, format and setup, spoken hook, copy hook (frame 1), value structure (type, promise, sequence), talking points, beat script, shot list with must-haves, and caption with comment trigger.
+
+WHY: The script alone left founders asking what to film and what to say. The brief answers both so they can film the same day.
+
+WATCH FOR: Format is read from the user's top 3 covers and transcripts; Sandcastles layout labels stay hints. Shot lists that reference another creator's Reel must keep the blur rule.
+
 ## 2026-10-12: v2.3.1, credentials only from this run's data
 
 WHAT: Credentials must come from the channel description or captions returned in the current run; memory, past chats and general knowledge are excluded.

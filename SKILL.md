@@ -176,19 +176,27 @@ Each move is a **mechanic**, phrased as an instruction. Examples: "Name one mech
 
 Also list up to 2 DISCARDs when they matter, for example "their 38% motivational close: your winners end on a short comment CTA".
 
-### 9. My next video
+### 9. My next video: the production brief
 
-**Hook:** one hook in the opener family my data supports. Value must land by the time my winners deliver it.
+The founder's only questions after reading this block are "what do I film, and what do I say?" Answer both completely, so they can film today without asking anything.
 
-**Beat sheet:** up to 6 beats. Each beat has a time range, the exact spoken line, and screen direction where the visual proves the point a second before the words say it.
-- Measure my speaking rate from my top video: transcript words ÷ seconds. Keep the total under 60 seconds and state the word count.
-- Put any credential or "I" line where my winners put it. Quote credentials only from my channel description or captions as returned by Sandcastles in this run. Never from memory, past chats or general knowledge, even if they look right. If none is available, write `[YOUR PROOF]` and say so in one line.
-- End with a comment-keyword CTA that delivers a free asset tied to the video's mechanism, plus the user's goal if one was given (for example a tracked link in the DM). Don't use a sales CTA unless my data supports it.
-- Fact-check every number and name in the script against the receipts.
+1. **Topic.** One sentence, inside the territory my winners already own. Never the outlier's topic unless the verdict is COPY. Add one line on why it should work, with a receipt from my data.
+2. **Format and setup.** The delivery my top 3 share (for example talking head to camera, green screen over a screenshot, walk-and-talk), the setting, and the target length. Read it from my top 3's covers and transcripts; Sandcastles' layout labels are hints only.
+3. **Spoken hook.** The exact first line, in the opener family my data supports. Value lands by the time my winners deliver it.
+4. **Copy hook.** The on-screen text on the first frame: 3 to 7 words, concrete, no jargon, and it must make the same promise as the spoken hook.
+5. **Value structure.** Name its type (for example "one mechanism, proven twice", "myth then correction", "before and after"). State the promise the hook makes, then the sequence of beats. Each beat must depend on the one before, so leaving early feels like missing the payoff.
+6. **Talking points.** 3 to 6 points in filming order, written in the second person, one line each. Someone should be able to film from these alone, without a teleprompter.
+7. **Script.** Up to 6 beats. Each has a time range, the exact spoken line, and screen direction where the visual proves the point a second before the words say it.
+   - Measure my speaking rate from my top video: transcript words ÷ seconds. Keep the total under 60 seconds and state the word count.
+   - Put any credential or "I" line where my winners put it. Quote credentials only from my channel description or captions as returned by Sandcastles in this run. Never from memory, past chats or general knowledge, even if they look right. If none is available, write `[YOUR PROOF]` and say so in one line.
+8. **Shot list.** Every clip to capture, as a checklist: the main to-camera take and its framing, each screen recording (what to open and what to click), any props or B-roll. Mark the shots the video can't work without.
+9. **Caption and comment trigger.** The caption's first line, the comment keyword, and exactly what the DM delivers: a free asset tied to the video's mechanism, plus the user's goal if one was given (for example a tracked link). Don't use a sales CTA unless my data supports it.
+
+Fact-check every number and name in the brief against the receipts.
 
 ## The screen
 
-The page is a fixed template, so every run looks the same and reads like Instagram: real Reel covers in profile grids, the verdict as a post, the script as a Reel storyboard. Never hand-write the page.
+The page is a fixed template, so every run looks the same and reads like Instagram: real Reel covers in profile grids, the verdict as a post, and the next video as a production brief with a Reel storyboard. Never hand-write the page.
 
 1. Write `data.json` in the scratch folder using the schema below. Use the raw Sandcastles `thumbnail` URLs (channel and video); the build script embeds them.
 2. Run `python scripts/build_page.py data.json outlier-check.html` from this skill's folder.
@@ -212,7 +220,12 @@ theirs, mine: {
   compare: exactly 7, ordered top 3, outlier, bottom 3: [{thumb, url, views, score, title (short name), role, label (the discriminating metric, e.g. "7 steps" or "ONE · 3.0s"), win (true if on the winners' side), blur (optional)}]
 }
 movesHeadline, moves: [{move, receipt}] (max 3), discards: [{what, why}] (max 2)
-next:     {title, hook, facts: [short strings: words, seconds, rate, shape, CTA], beats: [{time, line, screen, thumb (optional), blur (true for any outlier-creator cover)}]}
+next:     {title, topic, why, format: {delivery, setting, length},
+           spokenHook, copyHook, valueStructure: {type, promise, sequence: [beat names]},
+           talkingPoints: [strings], shotList: [{shot, detail, mustHave: bool}],
+           caption: {firstLine, keyword, delivers},
+           facts: [short strings: words, seconds, rate],
+           beats: [{time, line, screen, thumb (optional), blur (true for any outlier-creator cover)}]}
 receipts: [{title, items: [strings]}] covering locked rules, predictions vs results, selection and exclusions, rater agreement, noise floor, fields used and ignored, credits, limits
 sources:  [{label, url, views, score}] for every video measured
 ```
