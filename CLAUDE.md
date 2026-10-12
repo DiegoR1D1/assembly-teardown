@@ -1,16 +1,16 @@
-# Assembly Teardown
+# Outlier Check
 
 ## Status
-v1 released 2026-10-11. Public skill for the Sandcastles Head of YouTube application (Q8).
+v2 released 2026-10-12. Renamed from Assembly Teardown. Public skill for the Sandcastles Head of YouTube application (Q8).
 
 ## Purpose
-Claude skill: short-form outlier teardown by assembly, on Sandcastles MCP data.
+Claude skill: COPY / ADAPT / SKIP verdict on a short-form outlier, plus the user's next video, on Sandcastles MCP data.
 
 ## GitHub
-https://github.com/DiegoR1D1/assembly-teardown (public)
+https://github.com/DiegoR1D1/outlier-check (public)
 
 ## Deploy
-None. Users zip the folder and upload it to claude.ai as a skill.
+None. Users zip the repo and upload it to claude.ai as a skill. The saved copy lives in Diego's claude.ai skills.
 
 ## Architecture
-`SKILL.md` is the whole skill. This repo is the canonical copy.
+`SKILL.md` is the whole skill. It was written in the claude.ai build conversation; this repo mirrors the saved version.
