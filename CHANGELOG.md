@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-12: v2.3, repost rules made literal; light-only page
+
+WHAT: A repost fluke (best repost under 20% of the outlier's views and below the channel's top-3 cutoff) now decides FLUKE in step 5, and a proven repost decides TYPICAL. The verdict names the creator's repeatable script when one exists. The page template is light only.
+
+WHY: v2.1 said reposts should lead but never defined "far below", and steps 5 and 7 still read only the metrics, so two runs could disagree on the same data.
+
+WATCH FOR: The 20% line is a judgment call, not a measured threshold. Creators who never repost fall back to six-video metrics, which stay WEAK.
+
 ## 2026-10-12: v2.2, fixed page template with real Reel covers
 
 WHAT: The page is now built from assets/template.html by scripts/build_page.py from a data.json the skill writes. Real Reel covers are embedded as data URIs, laid out like Instagram profile grids, a verdict post and a Reel storyboard.

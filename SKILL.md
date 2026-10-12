@@ -115,7 +115,11 @@ Record whether the result HELD, BROKE (4 or fewer of 6) or was NOISE.
 
 ### 3. Noise floor
 
-- Reposts are the strongest evidence this skill has. If one or more reposts of the outlier exist and they land far below it, that outranks every metric: lead the verdict with it.
+- Reposts are the strongest evidence this skill has, and they outrank every metric. Apply these rules literally:
+  - **Repost fluke:** the best repost of the outlier got under 20% of its views AND its own outlier score is below the channel's top-3 cutoff. The words didn't carry it.
+  - **Repost proven:** a repost scored at or above the top-3 cutoff. The script travels.
+  - **No reposts:** fall back to the metrics in steps 5 and 6.
+- **Repeatable scripts:** on the outlier's channel, find any other script that scored at or above the top-3 cutoff on two or more posts. Name the best one in the verdict as the Reel worth studying instead.
 - If a repost of the outlier exists, report `outlier views ÷ repost views`. That gap is distribution, not content. The repost's own outlier score is the content-adjusted signal.
 - If the outlier's score is below the 90th percentile of eligible scores on its channel, it's a good day, not an outlier. Say so; the verdict is at most ADAPT.
 - Never credit an assembly feature with a difference smaller than an observed noise floor.
@@ -140,7 +144,7 @@ If you can't spawn subagents, score them yourself from the anonymised file only,
 
 ### 5. Is it typical? (theirs)
 
-Using only the metrics that DISCRIMINATE on their channel:
+Reposts decide first (step 3): a repost fluke is FLUKE and a proven repost is TYPICAL, whatever the metrics say. Without reposts, use only the metrics that DISCRIMINATE on their channel:
 - **TYPICAL:** the outlier sits on the top-3 side for most of them.
 - **FLUKE:** the outlier sits on the bottom-3 side for most of them.
 - **UNTESTED:** no metric discriminates, or there are fewer than 8 eligible videos.
@@ -161,7 +165,7 @@ Run the same scoring on my top 3 and bottom 3.
 - **COPY:** TYPICAL on their channel, and its mechanics match my winners on every metric that discriminates on my account. Copy the *structure*; never the topic or the hook wording.
 - **ADAPT:** everything in between. Take only the mechanics that my own data supports.
 
-Also label the verdict **STRONG** (repost evidence, or 2+ metrics discriminating) or **WEAK** (one metric, or a borderline score), and say which evidence leads.
+Also label the verdict **STRONG** (repost evidence, or 2+ metrics discriminating) or **WEAK** (one metric, or a borderline score), and say which evidence leads (`ledBy`). When reposts and metrics disagree, reposts win and the disagreement goes in the receipts.
 
 ### 8. What to take (3 moves at most)
 
