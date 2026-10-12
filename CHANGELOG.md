@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-12: v2.2, fixed page template with real Reel covers
+
+WHAT: The page is now built from assets/template.html by scripts/build_page.py from a data.json the skill writes. Real Reel covers are embedded as data URIs, laid out like Instagram profile grids, a verdict post and a Reel storyboard.
+
+WHY: Hand-written pages varied run to run and read as generic AI output. Users recognise their own platform's UI faster than charts.
+
+WATCH FOR: Covers need storage.googleapis.com egress from the sandbox; without it the page falls back to shaded tiles. Pages with ~100 covers run about 2.4 MB.
+
 ## 2026-10-12: v2.1, fixes from the first fresh run
 
 WHAT: Reposts lead the verdict when they exist. Re-cuts are deduped before selection. Outlier and comparison videos are scored from the same source. Comment-keyword CTAs and caption lists are flagged as possible drivers. Verdicts carry STRONG or WEAK. Credentials come only from the user's own channel, else [YOUR PROOF].

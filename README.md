@@ -28,6 +28,7 @@ A short-form port of the reference-teardown method I run on clients' long-form Y
 1. Connect the Sandcastles MCP to Claude: https://sandcastles.ai/mcp
 2. Download this repo as a zip.
 3. In claude.ai: Settings → Capabilities → Skills → Upload skill. Code execution must be on.
+4. Add `storage.googleapis.com` under Settings → Capabilities → Additional allowed domains, so the page can show real Reel covers.
 
 ## Use
 

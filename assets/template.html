@@ -1,0 +1,217 @@
+<title>Outlier Check</title>
+<style>
+/* Layout: an Instagram-native read. Profile grids with real Reel covers, the verdict as a post, the script as a Reel storyboard. */
+:root{
+  --bg:#ffffff; --surface:#fafafa; --raised:#ffffff; --fg:#0c1014; --muted:#737373; --line:#dbdbdb;
+  --accent:#0064e0; --accent-ink:#ffffff;
+  --skip:#d1253a; --adapt:#a35a00; --copy:#00753f;
+  --scrim:rgba(0,0,0,.55);
+  --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --data:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --surface:#0f0f10; --raised:#121212; --fg:#f5f5f5; --muted:#a8a8a8; --line:#2a2a2a;
+  --accent:#4a9dff; --accent-ink:#000000; --skip:#ff5a6e; --adapt:#ffb347; --copy:#3ddc84; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#0f0f10; --raised:#121212; --fg:#f5f5f5; --muted:#a8a8a8; --line:#2a2a2a;
+  --accent:#4a9dff; --accent-ink:#000000; --skip:#ff5a6e; --adapt:#ffb347; --copy:#3ddc84; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 15px/1.45 var(--ui);}
+.page{max-width:935px;margin:0 auto;padding-inline:16px;padding-block:0 64px;display:grid;gap:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:12px}
+.mark{font-weight:700;font-size:20px;letter-spacing:-.02em}
+.meta{font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+section{display:grid;gap:16px;padding-block:36px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h2{margin:0;font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.01em;text-wrap:balance;max-width:32ch}
+.line{margin:0;max-width:62ch;color:var(--fg)}
+.sub{margin:0;font-size:13px;color:var(--muted);max-width:70ch}
+
+/* reel cover */
+.cover{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:4px;overflow:hidden;background:var(--surface);display:block;color:#fff;text-decoration:none}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover .fallback{position:absolute;inset:0}
+.cover .views{position:absolute;left:6px;bottom:5px;display:flex;align-items:center;gap:3px;font-size:12px;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.cover .views svg{width:12px;height:12px;fill:#fff}
+.cover .badge{position:absolute;left:6px;top:6px;font-size:10px;font-weight:700;letter-spacing:.04em;padding:3px 6px;border-radius:3px;background:var(--scrim);color:#fff}
+.cover .badge.top{background:var(--accent);color:var(--accent-ink)}
+.cover .badge.outlier{background:#fff;color:#000}
+.cover.blur img{filter:blur(6px) saturate(.8);transform:scale(1.08)}
+a.cover:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* verdict post */
+.post{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:28px;align-items:center}
+.post-head{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-bottom:8px}
+.ava{width:32px;height:32px;border-radius:50%;object-fit:cover;background:var(--surface);border:1px solid var(--line);flex:none}
+.stamp{font-weight:900;font-size:clamp(72px,14vw,136px);line-height:.85;letter-spacing:-.04em}
+.stamp.SKIP{color:var(--skip)} .stamp.ADAPT{color:var(--adapt)} .stamp.COPY{color:var(--copy)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.05em;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.verdict-copy{display:grid;gap:12px;min-width:0}
+.verdict-copy .headline{font-size:20px;font-weight:700;line-height:1.3;margin:0;max-width:36ch}
+
+/* profile */
+.profile{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center}
+.profile .ava{width:72px;height:72px}
+.profile .handle{font-size:18px;font-weight:600}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px;margin-top:6px}
+.stats b{font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}
+.grid .cover{border-radius:2px}
+.grid .cover .views{font-size:10px;left:4px;bottom:3px}
+.grid .cover .views svg{width:9px;height:9px}
+.grid .cover.dim{opacity:.28;filter:grayscale(1)}
+.grid .cover.hl{outline:2px solid var(--accent);outline-offset:-2px}
+.grid .cover.ol{outline:3px solid var(--fg);outline-offset:-3px}
+.compare{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end}
+.compare .col{display:grid;gap:6px;min-width:0}
+.compare .col.out{transform:translateY(-10px)}
+.compare .cap{font-size:12px;line-height:1.3}
+.compare .score{font-weight:700;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font:600 11px/1.2 var(--data);padding:3px 6px;border-radius:3px;background:var(--surface);border:1px solid var(--line);color:var(--fg)}
+.chip.win{border-color:var(--accent);color:var(--accent)}
+.legend{display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+
+/* repost trail */
+.trail{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:center}
+.ratio{font-weight:900;font-size:clamp(56px,10vw,96px);line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.trail-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.trail-row .item{width:120px;flex:none;display:grid;gap:4px;font-size:12px}
+.trail-row .item b{font-size:14px;font-variant-numeric:tabular-nums}
+
+/* moves */
+.moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.move{border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:8px;align-content:start;background:var(--raised)}
+.move .n{font:700 12px/1 var(--data);color:var(--accent)}
+.move p{margin:0;font-weight:700;font-size:16px;line-height:1.3}
+.move small{color:var(--muted);font-size:12.5px;line-height:1.4}
+.discards{display:grid;gap:6px;font-size:13.5px;color:var(--muted)}
+.discards b{color:var(--fg)}
+
+/* storyboard */
+.hook{font-size:clamp(26px,4.4vw,40px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin:0;max-width:24ch;text-wrap:balance}
+.board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.frame{width:190px;flex:none;display:grid;gap:8px;align-content:start;scroll-snap-align:start}
+.phone{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,var(--surface),var(--line));border:1px solid var(--line)}
+.phone img{width:100%;height:100%;object-fit:cover;display:block}
+.phone.blur img{filter:blur(7px);transform:scale(1.1)}
+.phone .tc{position:absolute;left:8px;top:8px;font:700 11px/1 var(--data);background:var(--scrim);color:#fff;padding:4px 6px;border-radius:4px}
+.phone .said{position:absolute;left:8px;right:8px;bottom:12px;color:#fff;font-weight:700;font-size:12.5px;line-height:1.3;text-align:center;background:rgba(0,0,0,.62);border-radius:6px;padding:7px 8px}
+.frame .note{font-size:12px;color:var(--muted);line-height:1.4}
+.frame .note b{color:var(--fg);font-weight:600}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+
+details{padding-block:24px 0}
+summary{cursor:pointer;font-weight:600}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.receipts{display:grid;gap:14px;margin-top:14px;font-size:13px;color:var(--muted);max-width:80ch}
+.receipts h3{margin:0 0 4px;font-size:13px;color:var(--fg)}
+.receipts ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.receipts a{color:var(--accent)}
+
+@media (max-width:720px){
+  .post,.trail{grid-template-columns:1fr}
+  .post .reel{max-width:220px}
+  .grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .compare{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .compare .col.out{transform:none}
+  .moves{grid-template-columns:1fr}
+  .legend{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .grid .cover{transition:opacity .2s}
+}
+</style>
+
+<div class="page" id="app"></div>
+
+<script>
+const DATA = /*__DATA__*/null;
+
+const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const short = n => n == null ? "" : n >= 1e6 ? (n/1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/,"") + "M" : n >= 1e3 ? Math.round(n/1e3) + "K" : String(n);
+const full = n => n == null ? "" : Number(n).toLocaleString("en-US");
+const times = s => s == null ? "" : (s >= 100 ? Math.round(s).toLocaleString("en-US") : (+s).toFixed(1).replace(/\.0$/,"")) + "×";
+function shade(score){
+  const t = Math.max(0, Math.min(1, Math.log10(Math.max(score || .1, .1)) / 3 + .33));
+  return `color-mix(in srgb, var(--accent) ${Math.round(t*85)+8}%, var(--surface))`;
+}
+const BADGE = {top:"TOP 3", bottom:"BOTTOM 3", outlier:"OUTLIER", repost:"REPOST"};
+
+function cover(v, opts = {}){
+  const cls = ["cover", opts.cls || "", v.blur ? "blur" : ""].join(" ");
+  const img = v.thumb ? `<img src="${v.thumb}" alt="${esc(v.title || "Reel cover")}" loading="lazy">` : `<div class="fallback" style="background:${shade(v.score)}"></div>`;
+  const badge = opts.badge && BADGE[v.role] ? `<span class="badge ${v.role}">${BADGE[v.role]}</span>` : "";
+  const tag = v.url ? "a" : "div";
+  const href = v.url ? ` href="${esc(v.url)}" target="_blank" rel="noopener"` : "";
+  return `<${tag} class="${cls}"${href} title="${esc((v.title || "") + " · " + full(v.views) + " views · " + times(v.score))}">${img}${badge}<span class="views">${PLAY}${short(v.views)}</span></${tag}>`;
+}
+
+function profile(p){
+  return `<div class="profile">
+    ${p.avatar ? `<img class="ava" src="${p.avatar}" alt="">` : `<div class="ava"></div>`}
+    <div><div class="handle">@${esc(p.handle)}</div>
+      <div class="stats"><span><b>${esc(p.reels)}</b> Reels checked</span><span><b>${short(p.followers)}</b> followers</span><span><b>${full(p.median)}</b> median views</span></div>
+      <div class="sub">${esc(p.window)}</div></div></div>`;
+}
+
+function grid(p){
+  return `<div class="grid">${p.grid.map(v => {
+    const cls = v.role === "outlier" ? "ol" : (v.role === "top" || v.role === "bottom") ? "hl" : v.role === "repost" ? "hl" : "dim";
+    return cover(v, {cls});
+  }).join("")}</div>`;
+}
+
+function compare(p, winLabel){
+  const col = v => `<div class="col ${v.role === "outlier" ? "out" : ""}">${cover(v, {badge:true})}
+    <div class="cap"><span class="score">${times(v.score)}</span> ${esc(v.title || "")}</div>
+    ${v.label ? `<span class="chip ${v.win ? "win" : ""}">${esc(v.label)}</span>` : ""}</div>`;
+  return `<div class="legend"><span>Top 3</span><span>${esc(winLabel)}</span><span>Bottom 3</span></div>
+    <div class="compare">${p.compare.map(col).join("")}</div>`;
+}
+
+function render(d){
+  const v = d.verdict, o = d.outlier, n = d.next;
+  const parts = [];
+  parts.push(`<header class="top"><span class="mark">Outlier Check</span>
+    <span class="meta">for <b>@${esc(d.meta.account)}</b> · Goal: <b>${esc(d.meta.goal)}</b> · ${esc(d.meta.run)} · ${esc(d.meta.credits)} credits</span></header>`);
+
+  parts.push(`<section aria-label="Verdict"><div class="post">
+    <div class="reel"><div class="post-head">${o.avatar ? `<img class="ava" src="${o.avatar}" alt="">` : ""}@${esc(o.handle)}</div>${cover(o)}</div>
+    <div class="verdict-copy"><div class="stamp ${esc(v.call)}">${esc(v.call)}</div>
+      <div><span class="pill">${esc(v.confidence)} · led by ${esc(v.ledBy)}</span></div>
+      <p class="headline">${esc(v.headline)}</p><p class="sub">${esc(v.detail)}</p></div></div></section>`);
+
+  if (d.reposts){
+    const r = d.reposts;
+    parts.push(`<section><div class="eyebrow">The repost test</div><h2>${esc(r.headline)}</h2>
+      <div class="trail"><div class="ratio">${esc(r.ratio)}</div>
+      <div class="trail-row">${r.items.map(x => `<div class="item">${cover(x)}<b>${full(x.views)}</b><span>${esc(x.date)}</span></div>`).join("")}</div></div>
+      <p class="sub">${esc(r.note)}</p></section>`);
+  }
+
+  for (const [key, eyebrow] of [["theirs","Is it typical?"],["mine","Does it fit me?"]]){
+    const p = d[key];
+    parts.push(`<section><div class="eyebrow">${eyebrow}</div><h2>${esc(p.headline)}</h2>${profile(p)}${grid(p)}
+      <p class="line">${esc(p.line)}</p>${compare(p, key === "theirs" ? "Outlier" : "Outlier, on your rules")}</section>`);
+  }
+
+  parts.push(`<section><div class="eyebrow">What to take</div><h2>${esc(d.movesHeadline)}</h2>
+    <div class="moves">${d.moves.map((m,i) => `<div class="move"><span class="n">MOVE ${i+1}</span><p>${esc(m.move)}</p><small>${esc(m.receipt)}</small></div>`).join("")}</div>
+    ${d.discards && d.discards.length ? `<div class="discards">${d.discards.map(x => `<div><b>Discard ${esc(x.what)}.</b> ${esc(x.why)}</div>`).join("")}</div>` : ""}</section>`);
+
+  parts.push(`<section><div class="eyebrow">Your next video · ${esc(n.title)}</div><p class="hook">“${esc(n.hook)}”</p>
+    <div class="board">${n.beats.map(b => `<div class="frame"><div class="phone ${b.blur ? "blur" : ""}">${b.thumb ? `<img src="${b.thumb}" alt="">` : ""}<span class="tc">${esc(b.time)}</span><span class="said">${esc(b.line)}</span></div>
+      <div class="note"><b>Screen</b> · ${esc(b.screen)}</div></div>`).join("")}</div>
+    <div class="facts">${n.facts.map(f => `<span class="chip">${esc(f)}</span>`).join("")}</div></section>`);
+
+  parts.push(`<details><summary>Receipts</summary><div class="receipts">${d.receipts.map(r => `<div><h3>${esc(r.title)}</h3><ul>${r.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+    <div><h3>Every video measured</h3><ul>${d.sources.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a> · ${full(s.views)} views · ${times(s.score)}</li>`).join("")}</ul></div></div></details>`);
+
+  document.getElementById("app").innerHTML = parts.join("");
+}
+
+if (DATA) render(DATA);
+else document.getElementById("app").innerHTML = '<p class="sub" style="padding-block:40px">No run data. Build this page with scripts/build_page.py.</p>';
+</script>

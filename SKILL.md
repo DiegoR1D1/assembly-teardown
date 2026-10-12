@@ -184,30 +184,34 @@ Also list up to 2 DISCARDs when they matter, for example "their 38% motivational
 
 ## The screen
 
-Publish one artifact page, or reply in the same structure if artifacts aren't available.
+The page is a fixed template, so every run looks the same and reads like Instagram: real Reel covers in profile grids, the verdict as a post, the script as a Reel storyboard. Never hand-write the page.
 
-Design:
-- light, editorial, one accent colour
-- each block is a claim plus one small visual, with no paragraphs
-- the five blocks fit roughly one desktop screen above the receipts
+1. Write `data.json` in the scratch folder using the schema below. Use the raw Sandcastles `thumbnail` URLs (channel and video); the build script embeds them.
+2. Run `python scripts/build_page.py data.json outlier-check.html` from this skill's folder.
+3. Publish `outlier-check.html` as the page. If artifacts aren't available, give the user the HTML file and reply with the same five blocks in text.
 
-Blocks:
-1. **VERDICT.** COPY, ADAPT or SKIP set very large, with one line of reasoning. Example: "SKIP: a fluke on its own channel. Built like their flops, not their hits."
-2. **Is it typical?** Their top 3, the outlier and their bottom 3 as tiles shaded by outlier score. Label each with the metric that discriminates (for example ONE / LIST). One line.
-3. **Does it fit me?** The same tile row for my account, plus the direction my winners point. One line. If the patterns flip, say "Same check, opposite result."
-4. **What to take.** Up to 3 moves, each with its receipt in small text.
-5. **My next video.** The hook, set large, then the beat strip. Each beat shows its time, exact line and screen note.
+Covers download from `storage.googleapis.com`. If the sandbox blocks that domain, the page falls back to tiles shaded by outlier score; tell the user once to add `storage.googleapis.com` under Settings → Capabilities → Additional allowed domains.
 
-**Receipts**, collapsed in `<details>` at the bottom:
-- locked rules and their timestamp
-- predictions against results (HELD / BROKE / NOISE / SPLIT)
-- selection and exclusions
-- rater agreement
-- noise floor
-- Sandcastles fields used and fields ignored
-- credits used
-- links to every video measured, with views and outlier score
-- limits: sample size, the recap window, and anything I had already seen before scoring
+**Copy rules:** every line is one claim, no paragraphs. Headlines are the finding, not the section name. Numbers carry their unit (views, ×, seconds).
+
+**Schema** (all fields required unless marked optional):
+
+```
+meta:     {account, goal, run (date), credits}
+verdict:  {call: COPY|ADAPT|SKIP, confidence: STRONG|WEAK, ledBy (e.g. "reposts"), headline (one sentence), detail (one sentence)}
+outlier:  {thumb, url, views, score, title, handle, avatar}
+reposts:  optional {headline, ratio (e.g. "232×"), note, items: [{thumb, url, views, score, date, title}]}
+theirs, mine: {
+  handle, avatar, followers, median, reels (count), window (one line on the date range and what is highlighted),
+  headline, line,
+  grid:    every recap row, newest first: [{thumb, url, views, score, title, role: top|bottom|outlier|repost|""}],
+  compare: exactly 7, ordered top 3, outlier, bottom 3: [{thumb, url, views, score, title (short name), role, label (the discriminating metric, e.g. "7 steps" or "ONE · 3.0s"), win (true if on the winners' side), blur (optional)}]
+}
+movesHeadline, moves: [{move, receipt}] (max 3), discards: [{what, why}] (max 2)
+next:     {title, hook, facts: [short strings: words, seconds, rate, shape, CTA], beats: [{time, line, screen, thumb (optional), blur (true for any outlier-creator cover)}]}
+receipts: [{title, items: [strings]}] covering locked rules, predictions vs results, selection and exclusions, rater agreement, noise floor, fields used and ignored, credits, limits
+sources:  [{label, url, views, score}] for every video measured
+```
 
 ## Guardrails
 
