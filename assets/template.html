@@ -156,6 +156,7 @@ function shade(score){
   const t = Math.max(0, Math.min(1, Math.log10(Math.max(score || .1, .1)) / 3 + .33));
   return `color-mix(in srgb, var(--accent) ${Math.round(t*85)+8}%, var(--surface))`;
 }
+const at = s => "@" + esc(String(s ?? "").replace(/^@+/, ""));
 const BADGE = {top:"TOP 3", bottom:"BOTTOM 3", outlier:"OUTLIER", repost:"REPOST"};
 
 function cover(v, opts = {}){
@@ -170,7 +171,7 @@ function cover(v, opts = {}){
 function profile(p){
   return `<div class="profile">
     ${p.avatar ? `<img class="ava" src="${p.avatar}" alt="">` : `<div class="ava"></div>`}
-    <div><div class="handle">@${esc(p.handle)}</div>
+    <div><div class="handle">${at(p.handle)}</div>
       <div class="stats"><span><b>${esc(p.reels)}</b> Reels checked</span><span><b>${short(p.followers)}</b> followers</span><span><b>${full(p.median)}</b> median views</span></div>
       <div class="sub">${esc(p.window)}</div></div></div>`;
 }
@@ -194,10 +195,10 @@ function render(d){
   const v = d.verdict, o = d.outlier, n = d.next;
   const parts = [];
   parts.push(`<header class="top"><span class="mark">Outlier Check</span>
-    <span class="meta">for <b>@${esc(d.meta.account)}</b> · Goal: <b>${esc(d.meta.goal)}</b> · ${esc(d.meta.run)} · ${esc(d.meta.credits)} credits</span></header>`);
+    <span class="meta">for <b>${at(d.meta.account)}</b> · Goal: <b>${esc(d.meta.goal)}</b> · ${esc(d.meta.run)} · ${esc(d.meta.credits)} credits</span></header>`);
 
   parts.push(`<section aria-label="Verdict"><div class="post">
-    <div class="reel"><div class="post-head">${o.avatar ? `<img class="ava" src="${o.avatar}" alt="">` : ""}@${esc(o.handle)}</div>${cover(o)}</div>
+    <div class="reel"><div class="post-head">${o.avatar ? `<img class="ava" src="${o.avatar}" alt="">` : ""}${at(o.handle)}</div>${cover(o)}</div>
     <div class="verdict-copy"><div class="stamp ${esc(v.call)}">${esc(v.call)}</div>
       <div><span class="pill">${esc(v.confidence)} · led by ${esc(v.ledBy)}</span></div>
       <p class="headline">${esc(v.headline)}</p><p class="sub">${esc(v.detail)}</p></div></div></section>`);
@@ -233,7 +234,7 @@ function render(d){
     <div><span class="label">Script, beat by beat</span></div>
     <div class="board">${n.beats.map(b => `<div class="frame"><div class="phone ${b.blur ? "blur" : ""}">${b.thumb ? `<img src="${b.thumb}" alt="">` : ""}<span class="tc">${esc(b.time)}</span><span class="said">${esc(b.line)}</span></div>
       <div class="note"><b>Screen</b> · ${esc(b.screen)}</div></div>`).join("")}</div>
-    <div class="card"><span class="label">Caption</span><p class="caption"><b>@${esc(d.meta.account)}</b> ${esc(c.firstLine)}</p>
+    <div class="card"><span class="label">Caption</span><p class="caption"><b>${at(d.meta.account)}</b> ${esc(c.firstLine)}</p>
       <p class="caption">Comment <span class="kw">${esc(c.keyword)}</span> → ${esc(c.delivers)}</p></div>
   </div></section>`);
 
