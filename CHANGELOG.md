@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-12: v2.3.1, credentials only from this run's data
+
+WHAT: Credentials must come from the channel description or captions returned in the current run; memory, past chats and general knowledge are excluded.
+
+WHY: The first v2.3 run pulled "1M views 100+ times" from claude.ai memory. It appears in none of the account's captions.
+
+WATCH FOR: Most Instagram channel descriptions come back empty, so expect [YOUR PROOF] often. That is the correct output.
+
 ## 2026-10-12: v2.3, repost rules made literal; light-only page
 
 WHAT: A repost fluke (best repost under 20% of the outlier's views and below the channel's top-3 cutoff) now decides FLUKE in step 5, and a proven repost decides TYPICAL. The verdict names the creator's repeatable script when one exists. The page template is light only.

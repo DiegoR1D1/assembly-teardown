@@ -182,7 +182,7 @@ Also list up to 2 DISCARDs when they matter, for example "their 38% motivational
 
 **Beat sheet:** up to 6 beats. Each beat has a time range, the exact spoken line, and screen direction where the visual proves the point a second before the words say it.
 - Measure my speaking rate from my top video: transcript words ÷ seconds. Keep the total under 60 seconds and state the word count.
-- Put any credential or "I" line where my winners put it. Quote credentials only from my channel description or captions; if none is available, write `[YOUR PROOF]`. Never invent one.
+- Put any credential or "I" line where my winners put it. Quote credentials only from my channel description or captions as returned by Sandcastles in this run. Never from memory, past chats or general knowledge, even if they look right. If none is available, write `[YOUR PROOF]` and say so in one line.
 - End with a comment-keyword CTA that delivers a free asset tied to the video's mechanism, plus the user's goal if one was given (for example a tracked link in the DM). Don't use a sales CTA unless my data supports it.
 - Fact-check every number and name in the script against the receipts.
 
